@@ -22,32 +22,36 @@ RUN apt update \
                    vim \
                    less \
                    git \
-                   tig
-
-
-# Python3
-RUN apt update \
- && apt install -y python3 \
+                   tig \
+# Python3 \
+                   python3 \
                    python3-pip \
-                   python3-venv
+                   python3-venv \
+# Cleanup apt \
+ && apt clean \
+# Setup mc \
+ && echo "regex/i/\.(md|log|txt|js|json|ejs|yml|j2|cfg|xml|sql|py|ipynb)$\n    Include=editor" | tee -a /etc/mc/mc.ext
 
 
 
 
 # Create user
-ARG UID=2100
-ARG GID=2100
 ENV USER_NAME=dev_factory_jupyter
-RUN groupadd --gid $GID $USER_NAME \
- && useradd --uid $UID --gid $GID --shell /bin/bash --create-home $USER_NAME
+RUN useradd --shell /bin/bash --create-home $USER_NAME
+
 USER $USER_NAME
 
+# Setup vim
+RUN echo "set tabstop=4\nset shiftwidth=4\nset softtabstop=4\nset expandtab" | tee -a /home/$USER_NAME/.vimrc \
+ && echo "export EDITOR=vim" | tee -a /home/$USER_NAME/.bashrc
 
 
 
+
+# Setup Dockerfile shell
 # https://stackoverflow.com/questions/20635472/using-the-run-instruction-in-a-dockerfile-with-source-does-not-work
 # general:
-SHELL ["/bin/bash", "-c"] 
+SHELL ["/bin/bash", "-c"]
 # for python vituralenv:
 #SHELL ["/bin/bash", "-c", "source /usr/local/bin/virtualenvwrapper.sh"]
 
@@ -84,16 +88,6 @@ COPY --chown=$USER_NAME:$USER_NAME \
      files/entrypoint.sh \
      files/sysinfo.sh \
      /home/$USER_NAME/
-
-
-
-
-# Setup vim and mc
-RUN echo -e "set tabstop=4\nset shiftwidth=4\nset softtabstop=4\nset expandtab" | tee -a /home/$USER_NAME/.vimrc
-RUN echo "export EDITOR=vim" | tee -a /home/$USER_NAME/.bashrc
-USER root
-RUN echo -e "regex/i/\.(md|log|txt|js|json|ejs|yml|j2|cfg|xml|sql)$\n    Include=editor" | tee -a /etc/mc/mc.ext
-USER $USER_NAME
 
 
 
