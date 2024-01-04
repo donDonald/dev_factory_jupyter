@@ -35,6 +35,15 @@ RUN apt update \
 
 
 
+# libgl1 - Fixing ImportError: libGL.so.1: cannot open shared object file: No such file or directory
+RUN apt update \
+ && apt install -y libsm6 libxext6 libxrender-dev libgl1 \
+# Cleanup apt \
+ && apt clean
+
+
+
+
 # Create user
 ENV USER_NAME=dev_factory_jupyter
 RUN useradd --shell /bin/bash --create-home $USER_NAME
@@ -68,7 +77,7 @@ RUN cd /home/$USER_NAME \
  && pip install --upgrade pip \
  && pip3 install jupyter \
 # Most common python math tools \
- && pip3 install matplotlib numpy pandas torch torchvision torchaudio
+ && pip3 install matplotlib numpy pandas torch torchvision torchaudio opencv-python
 
 
 

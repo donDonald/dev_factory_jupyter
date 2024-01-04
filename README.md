@@ -3,16 +3,25 @@
 </div>
 
 # Intro
-Docker image with Jupyter and math tools.
+Docker image with Jupyter and math tools:
+* matplotlib
+* numpy
+* pandas
+* torch
+* torchvision
+* torchaudio
+* opencv-python
 
 ---
 
 
 # Use-cases
-- As a developer I and need quckly setup postgres db with pgadmin
+* As a student I need a Jupyter setup for math studies.
+* As an engineer I need a Jupyter setup for researching tasks.
+* As a ML engineer I need a Jupyter setup for developing ML networks.
 
 <div align="center">
-    <img src="images/use_cases.png">
+    <img width="40%" src="images/use_cases.png">
 </div>
 
 ---
@@ -167,4 +176,5 @@ bash run.sh dev_factory_jupyter --entrypoint=/bin/bash
 # Jupyter examples
 * https://jupyter.org/try-jupyter/lab/?path=notebooks%2FIntro.ipynb
 * https://docs.kanaries.net/topics/Python/jupyterlab-vs-notebook
+* https://pypi.org/project/opencv-python/
 
