@@ -6,5 +6,5 @@
 cd /home/$USER_NAME/$JUPYTER_LOCATION \
  && source .jupyter-venv/bin/activate
 
-jupyter notebook
+jupyter notebook --no-browser
 

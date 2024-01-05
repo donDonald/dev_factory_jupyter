@@ -3,14 +3,17 @@
 </div>
 
 # Intro
-Docker image with Jupyter and math tools:
-* matplotlib
-* numpy
-* pandas
-* torch
-* torchvision
-* torchaudio
-* opencv-python
+Docker image with Jupyter, math tools and basic dev tools:
+* Jupyter="1.0.0"
+* matplotlib="3.8.2"
+* numpy="1.16.2"
+* pandas="2.1.4"
+* seaborn="0.13.0"
+* torch="2.1.2"
+* torchvision="0.16.2"
+* torchaudio="2.1.2"
+* opencv-python="4.8.*"
+* tensorflow="2.14.0"
 
 ---
 

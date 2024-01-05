@@ -4,6 +4,24 @@ MAINTAINER Pavel Taranov <pavel.a.taranov@gmail.com>
 
 
 
+# Define versions for main components
+ARG JUPYTER_VERSION="1.0.0"
+
+ARG MATPLOTLIB_VERSION="3.8.2"
+ARG NUMPY_VERSION="1.26.2"
+ARG PANDAS_VERSION="2.1.4"
+ARG SEABORN_VERSION="0.13.0"
+
+ARG TORCH_VERSION="2.1.2"
+ARG TORCHVISION_VERSION="0.16.2"
+ARG TORCHAUDIO_VERSION="2.1.2"
+
+ARG OPENCV_PYTHON_VERSION="4.8.*"
+ARG TENSORFLOW_VERSION="2.14.0"
+
+
+
+
 #To skip setting itimezonei, to set timezone: echo "Australia/Adelaide" | sudo tee /etc/timezone
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -30,7 +48,7 @@ RUN apt update \
 # Cleanup apt \
  && apt clean \
 # Setup mc \
- && echo "regex/i/\.(md|log|txt|js|json|ejs|yml|j2|cfg|xml|sql|py|ipynb)$\n    Include=editor" | tee -a /etc/mc/mc.ext
+ && echo "regex/i/\.(md|log|txt|js|json|ejs|yml|j2|cfg|xml|sql|py|ipynb|sh)$\n    Include=editor" | tee -a /etc/mc/mc.ext
 
 
 
@@ -67,7 +85,7 @@ SHELL ["/bin/bash", "-c"]
 
 
 
-# Install jupyter
+# Install Jupyter
 ENV JUPYTER_LOCATION=Jupyter
 RUN cd /home/$USER_NAME \
  && mkdir $JUPYTER_LOCATION \
@@ -75,19 +93,18 @@ RUN cd /home/$USER_NAME \
  && python3 -m venv .jupyter-venv \
  && source .jupyter-venv/bin/activate\
  && pip install --upgrade pip \
- && pip3 install jupyter \
+ && pip3 install jupyter
+
+
+
+
 # Most common python math tools \
- && pip3 install matplotlib numpy pandas torch torchvision torchaudio opencv-python
-
-
-
-
-# Stop launching browser upon jupyter startup
 RUN cd /home/$USER_NAME/$JUPYTER_LOCATION \
- && source .jupyter-venv/bin/activate \
- && CFG_FILE=$(echo y | jupyter notebook --generate-config -y | awk '{print $NF}') \
- && echo "CFG_FILE:$CFG_FILE" \
- && echo "c.JupyterNotebookApp.open_browser = False" >> $CFG_FILE
+ && source .jupyter-venv/bin/activate\
+ && pip3 install matplotlib==$MATPLOTLIB_VERSION numpy==$NUMPY_VERSION pandas==$PANDAS_VERSION seaborn==$SEABORN_VERSION \
+ && pip3 install torch==$TORCH_VERSION torchvision==$TORCHVISION_VERSION torchaudio==$TORCHAUDIO_VERSION \
+ && pip3 install opencv-python==$OPENCV_PYTHON_VERSION \
+ && pip3 install tensorflow-cpu==$TENSORFLOW_VERSION
 
 
 
